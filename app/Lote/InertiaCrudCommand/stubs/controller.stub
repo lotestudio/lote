@@ -1,0 +1,58 @@
+<?php
+
+namespace %%NAMESPACE%%;
+
+use App\Http\Controllers\Controller;
+use %%FORM_REQUEST_FQN%%;
+use %%MODEL_FQN%%;
+use %%DATATABLE_FQN%%;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
+class %%CLASS_NAME%% extends Controller
+{
+    public function index(Request $request): Response|array|BinaryFileResponse
+    {
+        if ($request->ajax() && $request->json === 'true') {
+            return %%DATATABLE_CLASS%%::make()->get();
+        }
+
+        return Inertia::render('%%INERTIA_BASE%%/index', []);
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('%%INERTIA_BASE%%/form', []);
+    }
+
+    public function store(%%FORM_REQUEST_CLASS%% $request)
+    {
+        $data = $request->validated();
+        %%MODEL_VAR%%::query()->create($data);
+
+        return redirect(route('%%ROUTE_NAME_PREFIX%%.index'));
+    }
+
+    public function update(%%MODEL_VAR%% $%%MODEL_VAR%%, %%FORM_REQUEST_CLASS%% $request)
+    {
+        $data = $request->validated();
+        $%%MODEL_VAR%%->update($data);
+
+        return redirect(route('%%ROUTE_NAME_PREFIX%%.index'));
+    }
+
+    public function edit(%%MODEL_VAR%% $%%MODEL_VAR%%): Response
+    {
+        return Inertia::render('%%INERTIA_BASE%%/form', [
+            'model' => $%%MODEL_VAR%%,
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        %%MODEL_VAR%%::destroy([$id]);
+        return back();
+    }
+}

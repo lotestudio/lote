@@ -1,0 +1,130 @@
+/*@reference "@@/app.css";*/
+
+table.loteDataTable2 {
+    /*@apply table-fixed border-collapse w-full rounded-t ;*/
+    @apply table-fixed border-collapse w-full text-sm;
+
+    thead {
+        tr {
+            @apply bg-muted/50
+        }
+        @apply [&_tr]:border-b
+    }
+
+    tr {
+        @apply border-b transition-colors hover:bg-muted data-[state=selected]:bg-muted
+    }
+
+
+    th{
+        @apply h-10 px-2 align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5
+    }
+
+    tbody{
+        @apply [&_tr:last-child]:border-0;
+    }
+
+    tbody tr {
+        @apply border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted
+    }
+
+    tbody td{
+        @apply p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 font-medium;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    /*
+    STICKY ROW
+    Normal css box-shadow works for the header as it is a single html element
+    */
+
+    tr.dtSticky {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        box-shadow: 0 0 6px rgba(0,0,0,0.25);
+    }
+
+    /*
+    STICKY COLUMN
+    Avoid undesirable overlapping shadows by creating a faux shadow on the ::after pseudo-element instead of using the css box-shadow property.
+    */
+
+    th.dtSticky,
+    td.dtSticky {
+        position: sticky;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        @apply border-b transition-colors hover:bg-muted data-[state=selected]:bg-muted
+    }
+
+
+    th.dtSticky::after,
+    td.dtSticky::after {
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 0;
+        bottom: -1px;
+        width: 5px;
+        background: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+    }
+
+    th.dtSticky::before,
+    td.dtSticky::before {
+        content: "";
+        position: absolute;
+        left: -5px;
+        top: 0;
+        bottom: -1px;
+        width: 5px;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 100%);
+    }
+
+
+    td.dtSticky::before {
+        border-right: 1px solid ;
+    }
+    th.dtSticky::before {
+        border-left: 1px solid  ;
+        bottom:0
+    }
+
+
+    .loading {
+        opacity: 30%;
+    }
+
+    th:first-child {
+        @apply rounded-tl
+    }
+    th:last-child {
+        @apply rounded-tr
+    }
+}
+
+table.loteDataTable2 td {
+    /*
+        @apply border border-light-500 p-2 text-sm;
+    */
+}
+
+.loteDataTableWrapper{
+    @apply overflow-x-auto overflow-y-hidden;
+
+    &::-webkit-scrollbar {
+        border-radius: 0!important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 0!important;
+    }
+}
+
+.loteDataTablePager{
+    @apply flex rounded-b space-x-1
+}

@@ -1,0 +1,57 @@
+ul.list{
+    @apply bg-white dark:bg-neutral-900 rounded border border-neutral-300 dark:border-neutral-700 p-2
+}
+
+ul.list > li {
+    @apply border-b border-neutral-200 dark:border-neutral-800 p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800;
+}
+
+ul.list > li:last-child {
+    @apply border-none
+}
+
+
+div.list {
+    @apply bg-white dark:bg-neutral-900 rounded border border-neutral-300 dark:border-neutral-700 p-2
+}
+
+
+div.list-header {
+    @apply absolute w-full grid px-4 py-2 bg-neutral-800 dark:bg-neutral-700  text-neutral-100 dark:text-neutral-200 rounded-t
+}
+
+div.list.withHeader {
+    @apply bg-white dark:bg-neutral-900 rounded border border-neutral-300 dark:border-neutral-700 pt-12
+}
+
+div.list > div {
+    @apply border-b border-neutral-200 dark:border-neutral-800 p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800;
+}
+
+div.list > div:last-child {
+    @apply border-none
+}
+
+.draggable {
+    @apply bg-white dark:bg-neutral-900 rounded p-2;
+}
+
+.dragging {
+    @apply bg-white dark:bg-neutral-900 rounded p-2 shadow-lg;
+}
+
+dl.cart_list {
+    @apply text-sm divide-y divide-neutral-200 dark:divide-neutral-800 max-w-4xl px-4 py-1 bg-white dark:bg-neutral-900 rounded border border-neutral-300 dark:border-neutral-700;
+
+    & > div {
+        @apply px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 hover:bg-neutral-50 dark:hover:bg-neutral-800 items-center
+    }
+
+    & dt {
+        @apply font-medium text-neutral-900 dark:text-neutral-100;
+    }
+
+    & dd {
+        @apply sm:col-span-2 sm:mt-0 text-neutral-700 dark:text-neutral-300;
+    }
+}

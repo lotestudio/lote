@@ -1,0 +1,46 @@
+<?php
+
+namespace %%NAMESPACE%%;
+
+use App\Lote\DataTables2\Columns;
+use App\Lote\DataTables2\DataTableResource;
+use %%MODEL_FQN%%;
+
+class %%CLASS_NAME%% extends DataTableResource
+{
+    public ?string $model = %%MODEL_CLASS%%::class;
+
+    public string $defaultOrderField = '%%DEFAULT_ORDER_FIELD%%';
+
+%%SEARCHABLE_FIELDS_CODE%%
+%%USE_DB_PREFIX_CODE%%
+%%EXPORT_CLASS_CODE%%
+
+    public string $exportFileName = '%%EXPORT_FILE_NAME%%';
+
+    protected string $defaultWidth = '%%DEFAULT_WIDTH%%';
+
+    protected array $columns = [
+        ['label' => 'Title', 'sort' => '%%TITLE_COLUMN_NAME%%'],
+    ];
+
+    public function getColumns(): array
+    {
+        $columns = Columns::make($this->columns, ['defaultWidth' => $this->defaultWidth]);
+        return $columns->toArray();
+    }
+
+    protected function transform($item): array
+    {
+        $res = $item->toArray();
+        $res['actions'] = [
+            [
+                'label' => 'Редакция',
+                'href' => route('%%ROUTE_NAME_PREFIX%%.edit', $item->id),
+                'icon' => 'i-edit',
+                'class' => 'btn btn-warning btn-xs',
+            ],
+        ];
+        return $res;
+    }
+}

@@ -1,0 +1,61 @@
+<?php
+
+    namespace {{namespace}};
+
+    use App\Lote\DataTables2\Columns;
+    use App\Lote\DataTables2\DataTableResource;
+    use {{modelFQN}}; // Променете, ако вашият модел е на друго място
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Support\Collection;
+
+    class {{className}} extends DataTableResource
+    {
+
+        public ?string $model = {{modelName}}::class;
+
+        public ?string $searchable = '{{searchableField}}';
+
+    //  public string $defaultOrderField = 'order';
+
+    //  public ?string $useDatabaseTablePrefix = '';
+
+    //  public ?string $exportClass = EXPORTCLASS::class;
+
+    //  public string $exportFileName = 'excel_name.xlsx';
+
+
+        protected array $columns = [
+            ['label'=>'#####','sort'=>'{{searchableField}}'],
+        ];
+
+        //Manipulate the columns or just right the array $columns manually. Delete if protected array $columns is enough
+        public function getColumns():array
+        {
+            $columns = Columns::make($this->columns, ['defaultWidth'=>$this->defaultWidth]);
+            return $columns->toArray();
+        }
+
+        // prebuild global where, with, etc. Delete if not needed
+        public function preBuild(): void {}
+
+
+        protected function transform($item): array
+        {
+            $res['id']=$item->id;
+            $res['{{searchableField}}']=$item->{{searchableField}};
+
+            // Примерни действия (по избор)
+            // 'actions' => [
+            //    'edit_url' => route('{{modelVariable}}.edit', \${{modelVariable}}->id),
+            //    'view_url' => route('{{modelVariable}}.show', \${{modelVariable}}->id),
+            // ]
+
+            return $res;
+        }
+
+        //info or caption comes with data to table
+        protected function info(Collection $collection): ?string
+        {
+            return null;
+        }
+    }
