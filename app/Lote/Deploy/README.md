@@ -20,7 +20,7 @@ deploy --commit="Commit message" --branch="main" --fix
 - alias deploy="php vendor/bin/envoy run deploy" — add this to bashrc for alias
 
 ## Configuration
-Environment variables needed:
+### Environment variables needed:
 - DEPLOY_PRODUCTION_SERVER
 - DEPLOY_PRODUCTION_PATH
 - DEPLOY_STAGE_SERVER
@@ -28,3 +28,6 @@ Environment variables needed:
 - DEPLOY_STAGE_PORT
 - DEPLOY_PRODUCTION_PORT
 
+### Optional
+- DEPLOY_PHP
+- DEPLOY_COMPOSER

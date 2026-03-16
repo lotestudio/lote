@@ -63,8 +63,8 @@ class SetupConfiguration
 
     private function setupCommands(): void
     {
-        $this->config['composer'] = 'composer';
-        $this->config['php'] = 'php';
+        $this->config['composer'] = $_ENV['DEPLOY_COMPOSER'] ?? 'composer';
+        $this->config['php'] = $_ENV['DEPLOY_PHP'] ?? 'php';
     }
 
     private function setupBuildConfig(): void
