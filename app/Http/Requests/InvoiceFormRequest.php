@@ -13,9 +13,6 @@ class InvoiceFormRequest extends FormRequest
 
     public function rules(): array
     {
-
-        ray($this->services);
-
         return [
             'client_id' => ['required', 'integer', 'max:255'],
             'date' => 'required|date_format:Y-m-d',
