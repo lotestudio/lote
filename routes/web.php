@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceReplicatorController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\GoogleDriveController;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -14,9 +15,11 @@ use Laravel\Fortify\Features;
 
 Route::view('/', 'lote.home');
 
-Route::view('/google_test', 'google.test');
-Route::view('/google_api_redirect', 'google.redirect');
 
+Route::prefix('google/drive')->group(function () {
+    Route::get('/auth', [GoogleDriveController::class, 'redirect'])->name('google.drive.auth');
+    Route::get('/callback', [GoogleDriveController::class, 'callback'])->name('google.drive.callback');
+});
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 
