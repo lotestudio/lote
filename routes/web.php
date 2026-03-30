@@ -20,6 +20,9 @@ Route::prefix('google/drive')->group(function () {
     Route::get('/auth', [GoogleDriveController::class, 'redirect'])->name('google.drive.auth');
     Route::get('/callback', [GoogleDriveController::class, 'callback'])->name('google.drive.callback');
 });
+
+Route::redirect('/google_api_redirect', '/google/drive/callback');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 
