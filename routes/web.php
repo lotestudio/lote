@@ -14,6 +14,8 @@ use Laravel\Fortify\Features;
 
 Route::view('/', 'lote.home');
 
+Route::view('/google_test', 'google.test');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 

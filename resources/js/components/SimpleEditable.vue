@@ -24,16 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { nextTick, onMounted, ref } from 'vue';
+import { useHttp } from '@inertiajs/vue3';
 
-const emit = defineEmits([
-    'on_editor_save',
-    'on_editor_save_error',
-    'on_editor_blur',
-    'on_editor_change',
-    'on_editor_focus',
-]);
+const emit = defineEmits(['on_editor_save', 'on_editor_save_error', 'on_editor_blur', 'on_editor_change', 'on_editor_focus']);
 
 const props = defineProps({
     id: Number,
@@ -104,7 +98,7 @@ const save = async () => {
 
     isSaving.value = true;
 
-    const payload = {
+    const postData = useHttp({
         model: props.model,
         id: props.id,
         value: valueToSave,
@@ -112,18 +106,18 @@ const save = async () => {
         locale: props.locale,
         _method: props.method,
         ...props.data,
-    };
+    });
 
     try {
-        const response = await axios.post(props.post_url, payload);
+        const response = (await postData.post(props.post_url)) as { data: unknown };
 
         if (textEditor.value) textEditor.value.textContent = valueToSave;
         initialValue.value = valueToSave;
         changed.value = false;
 
         emit('on_editor_save', props.emit_response ? response.data : valueToSave);
-    } catch (e: unknown) {
-        emit('on_editor_save_error');
+    } catch (error: any) {
+        emit('on_editor_save_error', error.response.data.message ?? error.message);
         if (textEditor.value) textEditor.value.textContent = initialValue.value;
         changed.value = false;
     } finally {

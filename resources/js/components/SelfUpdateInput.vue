@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import axios from 'axios';
 import { ref, watch } from 'vue';
 import { Input } from '@/components/ui/input';
+import { useHttp } from '@inertiajs/vue3';
 
 interface Props {
     url: string;
@@ -51,7 +51,9 @@ const handleBlur = async () => {
     data[props.column] = localValue.value;
 
     try {
-        await axios[props.method](props.url, data);
+        const postData = useHttp(data);
+
+        await postData[props.method](props.url, data);
 
         emit('update:modelValue', localValue.value);
         borderState.value = 'success';
@@ -82,11 +84,9 @@ const handleBlur = async () => {
         :class="[
             'transition-all duration-300',
             {
-                'border-green-500 ring-2 ring-green-200':
-                    borderState === 'success',
+                'border-green-500 ring-2 ring-green-200': borderState === 'success',
                 'border-red-500 ring-2 ring-red-200': borderState === 'error',
-                'appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none':
-                    type === 'time' || type === 'date',
+                'appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none': type === 'time' || type === 'date',
             },
         ]"
         @blur="handleBlur"

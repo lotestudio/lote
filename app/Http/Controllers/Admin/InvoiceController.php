@@ -20,7 +20,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request): Response|array|BinaryFileResponse
     {
-        if ($request->ajax() && $request->json === 'true') {
+        if ($request->json === 'true') {
             return InvoiceDataTable::make()->get();
         }
 
