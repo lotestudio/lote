@@ -7,6 +7,6 @@
 <body>
 <p>Drive API Quickstart</p>
 <p>Redirected!</p>
-{{$token}}
+{{var_dump($token)}}
 </body>
 </html>
