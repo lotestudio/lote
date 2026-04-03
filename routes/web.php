@@ -19,6 +19,7 @@ Route::view('/', 'lote.home');
 Route::prefix('google/drive')->group(function () {
     Route::get('/auth', [GoogleDriveController::class, 'redirect'])->name('google.drive.auth');
     Route::get('/callback', [GoogleDriveController::class, 'callback'])->name('google.drive.callback');
+    Route::get('/tmp', [GoogleDriveController::class, 'tmp']);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

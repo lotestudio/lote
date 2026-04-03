@@ -2,21 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Google\Client as GoogleClient;
-use Illuminate\Contracts\Support\Renderable;
+use App\Models\GoogleToken;
+use App\Service\GoogleDrive;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GoogleDriveController extends Controller
 {
+    public function tmp()
+    {
+
+        $service = new GoogleDrive()->getService();
+
+        $files = $service->files->listFiles([
+            'pageSize' => 10,
+            'fields' => 'files(id, name)',
+        ]);
+
+        ray($files);
+
+        foreach ($files->getFiles() as $file) {
+            echo $file->getName().PHP_EOL;
+        }
+
+    }
+
     public function redirect()
     {
-        $client = $this->makeClient();
+        $client = GoogleDrive::makeClient();
 
         return redirect()->away($client->createAuthUrl());
     }
 
-    public function callback(Request $request): Renderable
+    public function callback(Request $request): RedirectResponse
     {
         if ($request->filled('error')) {
             abort(400, 'Google OAuth error: '.$request->string('error'));
@@ -28,29 +46,26 @@ class GoogleDriveController extends Controller
             abort(400, 'Missing authorization code.');
         }
 
-        $client = $this->makeClient();
+        $client = GoogleDrive::makeClient();
         $token = $client->fetchAccessTokenWithAuthCode($code);
 
         if (isset($token['error'])) {
             abort(400, 'Token exchange failed: '.($token['error_description'] ?? $token['error']));
         }
 
-        Cache::put('google_drive_token', $token, now()->addDay());
+        GoogleToken::query()->updateOrCreate(
+            ['id' => 1],
+            [
+                'access_token' => $token['access_token'] ?? null,
+                'refresh_token' => $token['refresh_token'] ?? null,
+                'expires_at' => ! empty($token['expires_in']) ? now()->addSeconds((int) $token['expires_in']) : null,
+                'scopes' => isset($token['scope'])
+                    ? explode(' ', is_string($token['scope']) ? $token['scope'] : '')
+                    : null,
+                'token_type' => $token['token_type'] ?? null,
+            ]
+        );
 
-        return view('google.redirect', ['token' => $token]);
-    }
-
-    private function makeClient(): GoogleClient
-    {
-        $client = new GoogleClient;
-
-        $client->setClientId(config('google.client_id'));
-        $client->setClientSecret(config('google.client_secret'));
-        $client->setRedirectUri(config('google.redirect_uri'));
-        $client->setAccessType('offline');
-        $client->setPrompt('consent');
-        $client->setScopes(config('google.drive_scopes'));
-
-        return $client;
+        return redirect()->route('dashboard')->with('success', 'Google Drive connected successfully. Token Saved');
     }
 }
