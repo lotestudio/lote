@@ -47,7 +47,7 @@ const deleteClient = (id: number) => {
               <ResetButton @click.stop.prevent="filterProps.resetFilters()"></ResetButton>
             </div>
             <Link :href="ClientController.create.url()">
-              <Button>Добави Client</Button>
+              <Button>Добави клиент</Button>
             </Link>
           </template>
         <template v-slot:tr="trProps">
