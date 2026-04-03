@@ -19,8 +19,6 @@ class GoogleDriveController extends Controller
             'fields' => 'files(id, name)',
         ]);
 
-        ray($files);
-
         foreach ($files->getFiles() as $file) {
             echo $file->getName().PHP_EOL;
         }
