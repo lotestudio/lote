@@ -7,7 +7,8 @@
 <body>
 <p>Drive API Quickstart</p>
 <p>Redirected!</p>
-{{--{{var_dump($token)}}--}}
+{{var_dump($token)}}
+
 
 {{--Как се ползва--}}
 {{--За Google Drive API го пращаш като Authorization header:``` php--}}
