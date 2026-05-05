@@ -58,7 +58,6 @@ function submit() {
                     <Label for="address_2">Address 1:</Label>
                     <Textarea
                         id="company"
-                        required
                         :tabindex="2"
                         v-model="form.address_2"
                     />
