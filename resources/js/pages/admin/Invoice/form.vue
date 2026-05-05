@@ -47,7 +47,7 @@ function submit() {
 
                 <div class="grid gap-2">
                     <Label for="recipient">Получател:</Label>
-                    <Input id="recipient" required :tabindex="3" v-model="form.recipient" />
+                    <Input id="recipient" :tabindex="3" v-model="form.recipient" />
                     <InputError class="mt-2" :message="form.errors.recipient" />
                 </div>
 

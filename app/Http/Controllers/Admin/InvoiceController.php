@@ -62,6 +62,16 @@ class InvoiceController extends Controller
         $services = $data['services'];
 
         unset($data['services']);
+
+        $client = Client::query()->find($data['client_id']);
+        $data['client_details'] = [
+            'company' => $client->company,
+            'address' => $client->address_1,
+            'number' => $client->number,
+            'vat' => $client->vat,
+            'mol' => $client->mol,
+        ];
+
         $invoice->update($data);
         $invoice->services()->delete();
         $invoice->services()->createMany($services);
